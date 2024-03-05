@@ -2,19 +2,18 @@ class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         ans = set()
         path = []
-        def helper(idx,path):
-            if sum(path) == target:
+        def helper(idx,path,total):
+            if total == target:
                 ans.add(tuple(path[:]))
                 return 
-            if sum(path) > target:
+            if total > target:
                 return
             
             for i in range(idx,len(candidates)):
                 path.append(candidates[i])
-                while 1:
-                    helper(i,path)
-                    break
-                helper(i+1,path)
+                total += candidates[i]
+                helper(i,path,total)
                 path.pop()
-        helper(0,path)
+                total -= candidates[i]
+        helper(0,path,0)
         return ans
